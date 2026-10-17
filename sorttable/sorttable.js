@@ -89,7 +89,8 @@ sorttable = {
         }
         // make it clickable to sort
         headrow[i].sorttable_columnindex = i;
-        headrow[i].sorttable_tbody = table.tBodies[0];
+        let bodies = Array.from(table.tBodies).filter(body => body.classList.contains('sortable'));
+        headrow[i].sorttable_tbody = bodies ? bodies : table.tBodies[0];
         dean_addEvent(headrow[i],"click", sorttable.innerSortFunction = function(e) {
 
           if (this.className.search(/\bsorttable_sorted\b/) != -1) {
