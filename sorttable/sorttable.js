@@ -57,11 +57,22 @@ sorttable = {
     // "total" rows, for example). This is B&R, since what you're supposed
     // to do is put them in a tfoot. So, if there are sortbottom rows,
     // for backwards compatibility, move them to tfoot (creating it if needed).
+    sorttoprows = [];
     sortbottomrows = [];
     for (var i=0; i<table.rows.length; i++) {
-      if (table.rows[i].className.search(/\bsortbottom\b/) != -1) {
+      if (table.rows[i].className.search(/\bsorttop\b/) != -1) {
+          sorttoprows[sorttoprows.length] = table.rows[i];
+      } else if (table.rows[i].className.search(/\bsortbottom\b/) != -1) {
         sortbottomrows[sortbottomrows.length] = table.rows[i];
       }
+    }
+    if (sorttoprows) {
+        // create a "table neck" element after header
+        tnc = document.createElement('tneck');
+        table.tHead.after(tnc);
+        for (i=0; i<sorttoprows.length; i++) {
+            tnc.appendChild(sorttoprows[i]);
+        }
     }
     if (sortbottomrows) {
       if (table.tFoot === null) {
